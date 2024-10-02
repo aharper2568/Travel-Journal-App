@@ -1,27 +1,26 @@
 import { useQuery } from '@apollo/client';
 
-import ProfileList from '../components/ProfileList';
+import { QUERY_USERS } from '../utils/queries';
+import { Link } from 'react-router-dom';
 
-import { QUERY_PROFILES } from '../utils/queries';
+const UserLinks = ({ users }) => {
+  return users?.map(user => (
+    <p key={user._id}>
+      <Link to={`/profiles/${user._id}`}>{user.username}</Link>
+    </p>
+  ));
+}
 
 const Home = () => {
-  const { loading, data } = useQuery(QUERY_PROFILES);
-  const profiles = data?.profiles || [];
+  const { loading, data } = useQuery(QUERY_USERS);
+  const users = data?.users || [];
 
+  if (loading) {
+    return <div>Loading...</div>
+  }
   return (
     <main>
-      <div className="flex-row justify-center">
-        <div className="col-12 col-md-10 my-3">
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
-            <ProfileList
-              profiles={profiles}
-              title="Here's the current roster of friends..."
-            />
-          )}
-        </div>
-      </div>
+      <UserLinks users={users} />
     </main>
   );
 };

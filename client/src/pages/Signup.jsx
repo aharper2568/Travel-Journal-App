@@ -8,7 +8,7 @@ import Auth from '../utils/auth';
 
 const Signup = () => {
   const [formState, setFormState] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
   });
@@ -41,11 +41,11 @@ const Signup = () => {
   };
 
   return (
-    <main className="flex-row justify-center mb-4">
-      <div className="col-12 col-lg-10">
-        <div className="card">
-          <h4 className="card-header bg-dark text-light p-2">Sign Up</h4>
-          <div className="card-body">
+    <main>
+      <div>
+        <div>
+          <h4>Sign Up</h4>
+          <div>
             {data ? (
               <p>
                 Success! You may now head{' '}
@@ -54,15 +54,13 @@ const Signup = () => {
             ) : (
               <form onSubmit={handleFormSubmit}>
                 <input
-                  className="form-input"
                   placeholder="Your username"
-                  name="name"
+                  name="username"
                   type="text"
-                  value={formState.name}
+                  value={formState.username}
                   onChange={handleChange}
                 />
                 <input
-                  className="form-input"
                   placeholder="Your email"
                   name="email"
                   type="email"
@@ -70,7 +68,6 @@ const Signup = () => {
                   onChange={handleChange}
                 />
                 <input
-                  className="form-input"
                   placeholder="******"
                   name="password"
                   type="password"
@@ -78,7 +75,6 @@ const Signup = () => {
                   onChange={handleChange}
                 />
                 <button
-                  className="btn btn-block btn-info"
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
@@ -88,9 +84,7 @@ const Signup = () => {
             )}
 
             {error && (
-              <div className="my-3 p-3 bg-danger text-white">
-                {error.message}
-              </div>
+              <div>{error.message}</div>
             )}
           </div>
         </div>
