@@ -31,24 +31,10 @@ type Query {
   entry(entryId: ID!): Entry 
 }
 
-input AddUserInput {
-  email: String!
-  username: String!
-  password: String!
-}
-
-input AddEntryInput {
-  title: String!
-  location: String!
-  date: String!
-  picture: String
-  content: String!
-}
-
 type Mutation {
-  addUser(input: AddUserInput!): Auth
+  addUser(input:): Auth
   login(email: String!, password: String!): Auth
-  addEntry(input: AddEntryInput!): Entry
+  addEntry(title: String! location: String! date: String! picture: String! content: String!): Entry
   removeEntry(entryId: ID!): User
 }`
 module.exports = typeDefs;
