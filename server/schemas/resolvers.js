@@ -36,6 +36,12 @@ const resolvers = {
       }
       throw new Error('You need to be logged in!');
     },
+    entries: async () => {
+      return Entry.find().populate('author');
+    },
+    entry: async (_, {entryId}) => {
+      return Entry.findById(entryId).populate('author')
+    }
   },
 
   Mutation: {
@@ -61,18 +67,11 @@ const resolvers = {
 
       return { token, user };
     },
-    addJournal: async (_, {profileId, entry}, context) => {
+    addEntry: async (_, {entryId}, context) => {
       if (context.user) {
-        return User.findOneAndUpdate(
-          {_id: profileId},
-          {
-            $addToSet: {entries: entry},
-          },
-          {
-            new:true,
-            runValidators: true,
-          }
-        )
+        const entry = await Entry.create({title, location, date, picture, content, author: context.user._id});
+        await User.findByIdAndUpdate(context.user._id, {$addToSet: {entries: entry._id}});
+        return User.findById(context.user._id).populate('entries');
       }
     }
   }
