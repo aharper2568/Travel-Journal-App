@@ -7,6 +7,7 @@ const Header = () => {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/me">Profile</Link>
+        <Link to="/create" >New Journal</Link>
         <AuthLinks />
       </nav>
     </header>

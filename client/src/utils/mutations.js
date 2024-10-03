@@ -12,6 +12,20 @@ export const ADD_PROFILE = gql`
   }
 `;
 
+export const ADD_JOURNAL  = gql`
+    mutation addJournal($username: String!, $title: String!, $content: String!) {
+      addJournal(username: $username, title: $title, content: $content) {
+        token
+        user {
+          _id
+          username
+          entries
+        }
+        
+      }
+    }
+`
+
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
