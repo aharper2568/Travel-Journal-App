@@ -2,6 +2,7 @@ const typeDefs = `#graphql
   type User {
   _id: ID
   username: String
+  password: String
   email: String
   entries: [Entry]
 }
@@ -13,7 +14,7 @@ type Entry {
   location: String!
   date: String!
   picture: String
-  content: String!
+  content: String
 }
 
 type Auth {
