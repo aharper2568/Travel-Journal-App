@@ -60,6 +60,20 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
+    },
+    addJournal: async (_, {profileId, entry}, context) => {
+      if (context.user) {
+        return User.findOneAndUpdate(
+          {_id: profileId},
+          {
+            $addToSet: {entries: entry},
+          },
+          {
+            new:true,
+            runValidators: true,
+          }
+        )
+      }
     }
   }
 };
