@@ -37,9 +37,9 @@ const resolvers = {
       throw new Error('You need to be logged in!');
     },
     entries: async () => {
-      return Entry.find().populate('author');
+      return Entry.find({}).populate('author');
     },
-    entry: async (_, {entryId}) => {
+    entry: async (_, { entryId }) => {
       return Entry.findById(entryId).populate('author')
     }
   },
@@ -67,11 +67,28 @@ const resolvers = {
 
       return { token, user };
     },
-    addEntry: async (_, {entryId}, context) => {
+    addEntry: async (_, { entryId }, context) => {
       if (context.user) {
-        const entry = await Entry.create({title, location, date, picture, content, author: context.user._id});
-        await User.findByIdAndUpdate(context.user._id, {$addToSet: {entries: entry._id}});
+        const entry = await Entry.create({ title, location, date, picture, content, author: context.user._id });
+        await User.findByIdAndUpdate(context.user._id, { $addToSet: { entries: entry._id } });
         return User.findById(context.user._id).populate('entries');
+      }
+    },
+    removeEntry: async (_, { entryId }, context) => {
+      if (!context.user) {
+        throw new Error('You need to be logged in to remove an entry!');
+      }
+
+      try {
+        const entry = await Entry.findByIdAndDelete(entryId);
+        if (!entry) {
+          throw new Error('No entry found with this ID.');
+        }
+
+        await User.findByIdAndUpdate(context.user._id, { $pull: { entries: entryId } });
+        return User.findById(context.user._id).populate('entries');
+      } catch (error) {
+        throw new Error('Failed to remove entry. Please try again.');
       }
     }
   }
