@@ -25,10 +25,10 @@ const resolvers = {
       });
     },
     users: async () => {
-      return User.find();
+      return User.find().populate('entries');
     },
     user: async (_, args) => {
-      return User.findOne({ _id: args.id });
+      return User.findOne({ _id: args.id }.populate('entries'));
     },
     me: async (_, _args, context) => {
       if (context.user) {
