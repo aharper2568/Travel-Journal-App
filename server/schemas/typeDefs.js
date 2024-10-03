@@ -7,6 +7,15 @@ const typeDefs = `#graphql
     entries: [String]
   }
 
+  type Entry {
+    _id: ID
+    author: User        
+    title: String!
+    location: String!
+    date: String!
+    picture: String
+    content: String!
+  }
   type Auth {
     token: ID!
     user: User
@@ -17,14 +26,16 @@ const typeDefs = `#graphql
     user(id: ID!): User
     searchUsers(term: String!): [User]!
     me: User
+    entries: [Entry]
+    entry(entryId: ID!): Entry 
   }
 
   type Mutation {
     addUser(email:String!, username:String!, password:String!): Auth
     login(email:String!, password:String!): Auth
 
-    addJournal(profileId: ID!, entry: [String!]) : User
-  }
+    saveEntry(title: String!, location: String!, date: String!, picture: String, content: String!): User
+    removeEntry(entryId: ID!): User
 `;
 
 module.exports = typeDefs;
