@@ -67,11 +67,14 @@ const resolvers = {
 
       return { token, user };
     },
-    addEntry: async (_, { entryId }, context) => {
+    addEntry: async (_, { title, location, date, picture, content }, context) => {
       if (context.user) {
         const entry = await Entry.create({ title, location, date, picture, content, author: context.user._id });
-        await User.findByIdAndUpdate(context.user._id, { $addToSet: { entries: entry._id } });
-        return User.findById(context.user._id).populate('entries');
+        return await User.findByIdAndUpdate(
+          context.user._id, 
+          { $addToSet: { entries: entry._id } },
+          { new: true },
+        ).populate('entries');
       }
     },
     removeEntry: async (_, { entryId }, context) => {
@@ -85,9 +88,11 @@ const resolvers = {
           throw new Error('No entry found with this ID.');
         }
         if (context.user.admin || entry.author === context.user._id) {
-
-          await User.findByIdAndUpdate(context.user._id, { $pull: { entries: entryId } });
-          return User.findById(context.user._id).populate('entries');
+          return await User.findByIdAndUpdate(
+            context.user._id, 
+            { $pull: { entries: entryId }},
+            { new: true },
+          ).populate('entries');
         } else {
           throw new Error('Failed to remove entry. Please try again.')
         }
