@@ -46,7 +46,7 @@ const resolvers = {
 
   Mutation: {
     addUser: async (_, args) => {
-      const user = await User.create({...args, admin: args.admin || false});
+      const user = await User.create({ ...args, admin: args.admin || false });
       const token = signToken(user);
       return { token, user };
     },
@@ -71,7 +71,7 @@ const resolvers = {
       if (context.user) {
         const entry = await Entry.create({ title, location, date, picture, content, author: context.user._id });
         return await User.findByIdAndUpdate(
-          context.user._id, 
+          context.user._id,
           { $addToSet: { entries: entry._id } },
           { new: true },
         ).populate('entries');
@@ -89,8 +89,8 @@ const resolvers = {
         }
         if (context.user.admin || entry.author === context.user._id) {
           return await User.findByIdAndUpdate(
-            context.user._id, 
-            { $pull: { entries: entryId }},
+            context.user._id,
+            { $pull: { entries: entryId } },
             { new: true },
           ).populate('entries');
         } else {
@@ -112,11 +112,33 @@ const resolvers = {
           throw new Error('No user found with this ID.');
         }
 
-        return(user);
-    
+        return (user);
+
       } catch (error) {
         throw new Error('Failed to remove user. Please try again.');
       }
+    },
+    updateEntry: async (_, { entryId, title, location, date, picture, content }, context) => {
+      if (!context.user) {
+        throw new Error('You need to be logged in to update an entry!');
+      }
+
+      const entry = await Entry.findById(entryId);
+      if (!entry) {
+        throw new Error('No entry found with this ID.');
+      }
+
+      if (!entry.author.equals(context.user._id) && !context.user.admin) {
+        throw new Error('You are not authorized to update this entry.');
+      }
+
+      const updatedEntry = await Entry.findByIdAndUpdate(
+        entryId,
+        { title, location, date, picture, content },
+        { new: true }
+      ).populate('author');
+
+      return updatedEntry;
     }
   }
 };
