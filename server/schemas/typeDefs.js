@@ -1,10 +1,11 @@
 const typeDefs = `#graphql
   type User {
-  _id: ID
+    _id: ID
   username: String
   password: String
   email: String
   entries: [Entry]
+  isAdmin: Boolean
 }
 
 type Entry {
@@ -32,7 +33,7 @@ type Query {
 }
 
 type Mutation {
-  addUser(input:): Auth
+  addUser(username:String!, email: String! password: String! isAdmin: Boolean): Auth
   login(email: String!, password: String!): Auth
   addEntry(title: String! location: String! date: String! picture: String! content: String!): Entry
   removeEntry(entryId: ID!): User
