@@ -24,7 +24,6 @@ const entrySchema = new Schema(
         },
         content: {
             type: String,
-            required: true,
         },
     })
     const Entry = model('Entry', entrySchema);

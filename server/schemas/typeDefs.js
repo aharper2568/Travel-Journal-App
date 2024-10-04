@@ -35,7 +35,7 @@ type Query {
 type Mutation {
   addUser(username:String!, email: String! password: String! isAdmin: Boolean): Auth
   login(email: String!, password: String!): Auth
-  addEntry(title: String! location: String! date: String! picture: String! content: String!): Entry
+  addEntry(title: String! location: String! date: String! picture: String content: String): User
   removeEntry(entryId: ID!): User
 }`
 module.exports = typeDefs;
