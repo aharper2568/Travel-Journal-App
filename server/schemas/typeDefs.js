@@ -37,5 +37,6 @@ type Mutation {
   login(email: String!, password: String!): Auth
   addEntry(title: String! location: String! date: String! picture: String content: String): User
   removeEntry(entryId: ID!): User
+  removeUser(_id: ID!): User
 }`
 module.exports = typeDefs;

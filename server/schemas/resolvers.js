@@ -99,6 +99,24 @@ const resolvers = {
       } catch (error) {
         throw new Error('Failed to remove entry. Please try again.');
       }
+    },
+    removeUser: async (_, { _id }, context) => {
+      if (!context.user) {
+        throw new Error('You need to be logged in and an admin to remove a user!');
+      }
+
+      try {
+        const user = await User.findByIdAndDelete(_id);
+
+        if (!user) {
+          throw new Error('No user found with this ID.');
+        }
+
+        return(user);
+    
+      } catch (error) {
+        throw new Error('Failed to remove user. Please try again.');
+      }
     }
   }
 };
