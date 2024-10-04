@@ -82,22 +82,23 @@ const resolvers = {
         throw new Error('You need to be logged in to remove an entry!');
       }
 
-      try {
-        const entry = await Entry.findByIdAndDelete(entryId);
-        if (!entry) {
-          throw new Error('No entry found with this ID.');
-        }
-        if (context.user.admin || entry.author === context.user._id) {
-          return await User.findByIdAndUpdate(
-            context.user._id,
-            { $pull: { entries: entryId } },
-            { new: true },
-          ).populate('entries');
-        } else {
-          throw new Error('Failed to remove entry. Please try again.')
-        }
-      } catch (error) {
-        throw new Error('Failed to remove entry. Please try again.');
+      const entry = await Entry.findById(entryId);
+      if (!entry) {
+        throw new Error('No entry found with this ID.');
+      }
+
+      if (context.user.admin || entry.author.equals(context.user._id)) {
+        await Entry.findByIdAndDelete(entryId);
+
+        await User.findByIdAndUpdate(
+          context.user._id,
+          { $pull: { entries: entryId } },
+          { new: true }
+        );
+    
+        return entry;
+      } else {
+        throw new Error('You are not authorized to remove this entry.');
       }
     },
     removeUser: async (_, { _id }, context) => {
