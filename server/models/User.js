@@ -24,7 +24,11 @@ const userSchema = new Schema({
       type: Types.ObjectId,
       ref: 'Entry'
     }
-  ]
+  ],
+  admin: {
+  type: Boolean,
+  default: false,
+  }
 });
 
 userSchema.pre('save', async function (next) {
