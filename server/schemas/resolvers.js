@@ -45,8 +45,8 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (_, { email, username, password}) => {
-      const user = await User.create({email, username, password});
+    addUser: async (_, args) => {
+      const user = await User.create({...args, admin: args.admin || false});
       const token = signToken(user);
       return { token, user };
     },
@@ -84,9 +84,13 @@ const resolvers = {
         if (!entry) {
           throw new Error('No entry found with this ID.');
         }
+        if (context.user.admin || entry.author === context.user._id) {
 
-        await User.findByIdAndUpdate(context.user._id, { $pull: { entries: entryId } });
-        return User.findById(context.user._id).populate('entries');
+          await User.findByIdAndUpdate(context.user._id, { $pull: { entries: entryId } });
+          return User.findById(context.user._id).populate('entries');
+        } else {
+          throw new Error('Failed to remove entry. Please try again.')
+        }
       } catch (error) {
         throw new Error('Failed to remove entry. Please try again.');
       }
