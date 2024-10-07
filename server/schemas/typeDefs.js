@@ -38,6 +38,6 @@ type Mutation {
   addEntry(title: String! location: String! date: String! picture: String content: String): User
   removeEntry(entryId: ID!): User
   removeUser(_id: ID!): User
-  updateEntry(entryId: ID! title: String! location: String! date: String! picture: String content: String): User
+  updateEntry(entryId: ID! title: String! location: String! date: String! picture: String content: String): Entry
 }`
 module.exports = typeDefs;

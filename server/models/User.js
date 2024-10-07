@@ -25,7 +25,7 @@ const userSchema = new Schema({
       ref: 'Entry'
     }
   ],
-  admin: {
+  isAdmin: {
   type: Boolean,
   default: false,
   }

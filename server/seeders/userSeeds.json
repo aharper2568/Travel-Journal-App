@@ -5,7 +5,6 @@
     "password": "password1234",
     "entries": [
       {
-        "_id": "entryId12345",
         "title": "Test Title",
         "location": "North Carolina",
         "date": "2024-01-01",

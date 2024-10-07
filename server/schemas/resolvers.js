@@ -46,7 +46,7 @@ const resolvers = {
 
   Mutation: {
     addUser: async (_, args) => {
-      const user = await User.create({ ...args, admin: args.admin || false });
+      const user = await User.create({ ...args, isAdmin: args.isAdmin || false });
       const token = signToken(user);
       return { token, user };
     },
@@ -87,7 +87,7 @@ const resolvers = {
         throw new Error('No entry found with this ID.');
       }
 
-      if (context.user.admin || entry.author.equals(context.user._id)) {
+      if (context.user.isAdmin || entry.author.equals(context.user._id)) {
         await Entry.findByIdAndDelete(entryId);
 
         await User.findByIdAndUpdate(
