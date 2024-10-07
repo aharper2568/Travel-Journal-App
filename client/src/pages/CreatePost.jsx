@@ -2,18 +2,18 @@ import { Navigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { QUERY_SINGLE_USER, QUERY_ME } from '../utils/queries';
-import { ADD_JOURNAL } from '../utils/mutations';
+import { ADD_ENTRY } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
-const JournalForm = ({ profileId }) => {
+const CreateEntry = ({ profileId }) => {
   const [entry, setEntry] = useState('')
-  const [addJournal, {error}] = useMutation(ADD_JOURNAL)
+  const [addEntry, {error}] = useMutation(ADD_ENTRY)
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      const data = await addJournal({
+      const data = await addEntry({
         variables: {profileId, entry}
       });
 
@@ -38,4 +38,4 @@ const JournalForm = ({ profileId }) => {
 )}
 
 
-export default JournalForm
+export default CreateEntry
