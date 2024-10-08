@@ -30,7 +30,11 @@ export const ADD_ENTRY = gql`
     token
     user {
       _id
-      entries
+      entries{
+        title
+        location
+        content
+      }
     } 
   }
 }
@@ -42,7 +46,11 @@ export const REMOVE_ENTRY = gql`
     token
     user {
       _id
-      entries
+      entries{
+        title
+        location
+        content
+      } 
     } 
   }
 }
@@ -54,7 +62,11 @@ export const UPDATE_ENTRY = gql`
     token
     user {
       _id
-      entries
+      entries {
+        title
+        location
+        content
+      }
     } 
   }
 }
