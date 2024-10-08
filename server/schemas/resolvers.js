@@ -28,7 +28,7 @@ const resolvers = {
       return User.find().populate('entries');
     },
     user: async (_, args) => {
-      return User.findOne({ _id: args.id }.populate('entries'));
+      return User.findOne({ _id: args.id }).populate('entries');;
     },
     me: async (_, _args, context) => {
       if (context.user) {
