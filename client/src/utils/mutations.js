@@ -13,47 +13,53 @@ export const ADD_PROFILE = gql`
 `;
 
 export const REMOVE_PROFILE = gql`
-  mutation removeUser($id: ID!) {
-    removeUser(id: $id) {
-      user {
+  mutation removeUser($_id: ID!) {
+    removeUser(_id: $_id) {
         _id
         username
-      }
     }
   }
 `
 
 export const ADD_ENTRY = gql`
-  mutation addEntry($title: String!, $location: String!, $date: String!) {
-  addEntry(title: $title, location: $location, date: $date) {
-      entries {
-        title
-        location
-        content
+  mutation addEntry($title: String!, $location: String!, $date: String!, $picture: String, $content: String!) {
+    addEntry(title: $title, location: $location, date: $date, picture: $picture, content: $content) {
+      _id
+      title
+      location
+      date
+      picture
+      content
+      author {
+        _id
+        username
       }
     }
   }
 `;
 
+
 export const REMOVE_ENTRY = gql`
   mutation removeEntry($entryId: ID!) {
-  removeEntry(entryId: $entryId) {
-      entries{
-        title
-        location
-        content
-      } 
+    removeEntry(entryId: $entryId) {
+      _id
+      title
+      content
     }
   }
 `;
 
 export const UPDATE_ENTRY = gql`
-  mutation updateEntry($entryId: ID!, $title: String!, $location: String!, $date: String! ) {
-  updateEntry(entryId: $entryId) {
-      entries {
-        title
-        location
-        content
+  mutation updateEntry($entryId: ID!, $title: String!, $location: String!, $date: String!, $content: String) {
+    updateEntry(entryId: $entryId, title: $title, location: $location, date: $date, content: $content) {
+      _id
+      title
+      location
+      date
+      content
+      author {
+        _id
+        username
       }
     }
   }
