@@ -5,9 +5,13 @@ export const QUERY_USERS = gql`
     users {
       _id
       username
-      entries{
-        
+      email
+      isAdmin
+      entries {
+        _id
         title
+        location
+        date
       }
     }
   }
@@ -18,9 +22,11 @@ export const QUERY_SINGLE_USER = gql`
     user(id: $id) {
       _id
       username
-      entries{
-        
+      entries {
+        _id
         title
+        location
+        date
       }
     }
   }
@@ -31,8 +37,8 @@ export const QUERY_SEARCH_USERS = gql`
     users(term: $term) {
     _id
     username
+    isAdmin
     entries{
-      
       title
     } 
    }
@@ -44,8 +50,13 @@ export const QUERY_ME = gql`
     me {
       _id
       username
-      entries{
+      email
+      isAdmin
+      entries {
+        _id
         title
+        location
+        date
       }
     }
   }

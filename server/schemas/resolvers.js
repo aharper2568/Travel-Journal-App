@@ -70,11 +70,13 @@ const resolvers = {
     addEntry: async (_, { title, location, date, picture, content }, context) => {
       if (context.user) {
         const entry = await Entry.create({ title, location, date, picture, content, author: context.user._id });
-        return await User.findByIdAndUpdate(
+        await User.findByIdAndUpdate(
           context.user._id,
           { $addToSet: { entries: entry._id } },
           { new: true },
         ).populate('entries');
+        console.log('entry submitted')
+        return entry
       }
     },
     removeEntry: async (_, { entryId }, context) => {
@@ -129,7 +131,7 @@ const resolvers = {
         throw new Error('No entry found with this ID.');
       }
 
-      if (!entry.author.equals(context.user._id) && !context.user.admin) {
+      if (!entry.author.equals(context.user._id) && !context.user.isAdmin) {
         throw new Error('You are not authorized to update this entry.');
       }
 
