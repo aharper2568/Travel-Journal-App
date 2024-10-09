@@ -41,55 +41,66 @@ const Signup = () => {
   };
 
   return (
-    <main>
-      <div>
-        <div>
-          <h4>Sign Up</h4>
-          <div>
-            {data ? (
-              <p>
-                Success! You may now head{' '}
-                <Link to="/">back to the homepage.</Link>
-              </p>
-            ) : (
-              <form onSubmit={handleFormSubmit}>
-                <input
-                  placeholder="Your username"
-                  name="username"
-                  type="text"
-                  value={formState.username}
-                  onChange={handleChange}
-                />
-                <input
-                  placeholder="Your email"
-                  name="email"
-                  type="email"
-                  value={formState.email}
-                  onChange={handleChange}
-                />
-                <input
-                  placeholder="******"
-                  name="password"
-                  type="password"
-                  value={formState.password}
-                  onChange={handleChange}
-                />
-                <button
-                  style={{ cursor: 'pointer' }}
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </form>
-            )}
+    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div style={{ background: '#A5B68D' }} className="max-w-md w-full p-6 bg-white border border-gray-300 rounded-lg shadow-lg">
+      <h4 className="text-2xl font-bold mb-6 text-center">Sign Up</h4>
 
-            {error && (
-              <div>{error.message}</div>
-            )}
-          </div>
+      {data ? (
+        <p className="text-center">
+          Success! You may now head{' '}
+          <Link to="/" className="text-blue-500 underline">
+            back to the homepage.
+          </Link>
+        </p>
+      ) : (
+        <form onSubmit={handleFormSubmit}>
+          <input
+            placeholder="Your username"
+            name="username"
+            type="text"
+            value={formState.username}
+            onChange={handleChange}
+            required
+            className="w-full p-3 mb-4 border border-gray-300 rounded"
+            style={{ background: '#FCFAEE' }}
+          />
+          <input
+            placeholder="Your email"
+            name="email"
+            type="email"
+            value={formState.email}
+            onChange={handleChange}
+            required
+            className="w-full p-3 mb-4 border border-gray-300 rounded"
+            style={{ background: '#FCFAEE' }}
+          />
+          <input
+            placeholder="Password"
+            name="password"
+            type="password"
+            value={formState.password}
+            onChange={handleChange}
+            required
+            className="w-full p-3 mb-6 border border-gray-300 rounded"
+            style={{ background: '#FCFAEE' }}
+          />
+          <button
+            type="submit"
+            className="w-full p-3 bg-blue-500 text-white rounded-lg transition duration-300 hover:scale-105"
+            style={{ background: '#DA8359' }}
+          >
+            Submit
+          </button>
+        </form>
+      )}
+
+      {error && (
+        <div className="mt-4 text-red-600 text-center">
+          {error.message}
         </div>
-      </div>
-    </main>
+      )}
+    </div>
+  </main>
   );
 };
 
