@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Error from './pages/Error';
 import CreatePost from './pages/CreatePost'
+import TestComponent from './pages/Debug.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,9 @@ const router = createBrowserRouter([
       }, {
         path: '/create',
         element: <CreatePost />
+      }, {
+        path: '/debug',
+        element: <TestComponent/>
       }
     ]
   }
