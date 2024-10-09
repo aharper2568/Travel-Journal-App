@@ -41,10 +41,10 @@ const Login = () => {
   };
 
   return (
-    <main>
+    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div style={{ background: '#A5B68D' }} className="max-w-md w-full p-6 bg-white border border-gray-300 rounded-lg shadow-lg">
       <div>
-        <div>
-          <h4>Login</h4>
+      <h4 className="text-2xl font-bold mb-6 text-center">Login</h4>
           <div>
             {data ? (
               <p>
@@ -52,28 +52,38 @@ const Login = () => {
                 <Link to="/">back to the homepage.</Link>
               </p>
             ) : (
-              <form onSubmit={handleFormSubmit}>
-                <input
-                  placeholder="Your email"
-                  name="email"
-                  type="email"
-                  value={formState.email}
-                  onChange={handleChange}
-                />
-                <input
-                  placeholder="******"
-                  name="password"
-                  type="password"
-                  value={formState.password}
-                  onChange={handleChange}
-                />
-                <button
-                  style={{ cursor: 'pointer' }}
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </form>
+              <form style={{ background: '#ECDFCC' }} onSubmit={handleFormSubmit} className="max-w-md mx-auto p-6 bg-white border border-gray-300 rounded-lg shadow-lg">
+
+  <input
+    placeholder="Email"
+    name="email"
+    type="email"
+    value={formState.email}
+    onChange={handleChange}
+    required
+    className="w-full p-3 mb-6 border border-gray-300 rounded"
+            style={{ background: '#FCFAEE' }}
+          />
+  
+  <input
+    placeholder="Password"
+    name="password"
+    type="password"
+    value={formState.password}
+    onChange={handleChange}
+    required
+    className="w-full p-3 mb-6 border border-gray-300 rounded"
+            style={{ background: '#FCFAEE' }}
+          />
+  
+  <button
+            type="submit"
+            className="w-full p-3 bg-blue-500 text-white rounded-lg transition duration-300 hover:scale-105"
+            style={{ background: '#DA8359' }}
+          >
+    Submit
+  </button>
+</form>
             )}
 
             {error && (
