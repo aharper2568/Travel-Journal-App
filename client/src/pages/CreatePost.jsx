@@ -1,10 +1,11 @@
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ADD_ENTRY, UPLOAD_IMAGE } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
 const CreateEntry = ({ profileId }) => {
+  const imageInputRef = useRef();
   const [title, setTitle] = useState('')
   const [date, setDate] = useState('')
   const [location, setLocation] = useState('')
@@ -13,26 +14,35 @@ const CreateEntry = ({ profileId }) => {
   const [addEntry, { error }] = useMutation(ADD_ENTRY)
   const [uploadImage, { error: imageError }] = useMutation(UPLOAD_IMAGE)
 
+  if (imageError) console.log(imageError);
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setPicture(URL.createObjectURL(file));
-      
+
     }
   };
 
   const handleDrop = async (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+
     if (file) {
       setPicture(URL.createObjectURL(file));
+
+      const variables = {
+        id: imageInputRef.current.id,
+        image: file,
+      };
+
+      console.log('VARIABLES', variables);
+
       const { data } = await uploadImage({
-        variables: {
-          file: file,
-        }
+        variables
       });
-      console.log(data)
-      console.log(file, picture)
+
+      console.log(data);
     }
   };
 
@@ -113,7 +123,7 @@ const CreateEntry = ({ profileId }) => {
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 className="w-full p-4 mb-4 border-2 border-dashed border-gray-300 rounded-lg text-center"
-                style={{ background: '#FCFAEE' }} 
+                style={{ background: '#FCFAEE' }}
               >
                 {picture ? (
                   <img src={picture} alt="Preview" className="mb-2 rounded-md" style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'cover' }} />
@@ -121,6 +131,7 @@ const CreateEntry = ({ profileId }) => {
                   <p className="text-gray-500">Drag & drop a picture here.</p>
                 )}
                 <input
+                  ref={imageInputRef}
                   type='file'
                   name='image'
                   id='image'

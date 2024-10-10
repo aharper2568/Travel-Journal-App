@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
-
+const graphqlUploadExpress = require('graphql-upload/graphqlUploadExpress.js');
+const cors = require('cors');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
-const multer  = require('multer');
 
 
 const { typeDefs, resolvers } = require('./schemas');
@@ -19,15 +19,18 @@ const server = new ApolloServer({
   formatError(err) {
     console.log(err);
     return err;
-  }
+  },
+  uploads: false,
 });
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
   await server.start();
 
-  app.use(express.urlencoded({ extended: false, limit: "10mb" }));
+  app.use(express.urlencoded({ extended: false, limit: '10mb' }));
   app.use(express.json());
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }));
+  app.use(cors());
 
   app.use('/graphql', expressMiddleware(server, {
     context: authMiddleware

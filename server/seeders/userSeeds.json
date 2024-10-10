@@ -2,20 +2,6 @@
   {
     "username": "testuser",
     "email": "test@user.com",
-    "password": "password1234",
-    "entries": [
-      {
-        "title": "Test Title",
-        "location": "North Carolina",
-        "date": "2024-01-01",
-        "picture": null,
-        "content": "Spot for text at a later time",
-        "author": {
-          "_id": "userId12345",
-          "username": "testuser",
-          "email": "test@user.com"
-        }
-      }
-    ]
+    "password": "password1234"
   }
 ]

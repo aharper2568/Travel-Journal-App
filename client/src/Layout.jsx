@@ -2,8 +2,8 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  createHttpLink,
 } from '@apollo/client';
+import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
 import { setContext } from '@apollo/client/link/context';
 import { Outlet } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ import Footer from './components/Footer';
 
 import './App.css'
 
-const httpLink = createHttpLink({
+const uploadLink = createUploadLink({
   uri: '/graphql',
 });
 
@@ -24,12 +24,13 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
+      'Apollo-Require-Preflight': 'true'
     },
   };
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: authLink.concat(uploadLink),
   cache: new InMemoryCache(),
 });
 

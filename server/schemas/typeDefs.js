@@ -1,4 +1,6 @@
 const typeDefs = `#graphql
+  scalar Upload
+
   type User {
     _id: ID
   username: String
@@ -9,13 +11,13 @@ const typeDefs = `#graphql
 }
 
 type Image {
-  _id: ID
-  filename: String
+  id: String!
+  filename: String!
 }
 
 type Entry {
   _id: ID
-  author: User        
+  author: User
   title: String!
   location: String!
   date: String!
@@ -34,7 +36,7 @@ type Query {
   searchUsers(term: String!): [User]!
   me: User
   entries: [Entry]
-  entry(entryId: ID!): Entry 
+  entry(entryId: ID!): Entry
 }
 
 type Mutation {
@@ -43,7 +45,7 @@ type Mutation {
   addEntry(title: String!, location: String!, date: String!, picture: String, content: String): Entry
   removeEntry(entryId: ID!): Entry
   removeUser(_id: ID!): User
-  uploadImage: Image 
+  uploadImage(id: String!, image: Upload!): Image
   updateEntry(entryId: ID! title: String!, location: String!, date: String!, picture: String, content: String): Entry
 }`
 module.exports = typeDefs;

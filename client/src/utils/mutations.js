@@ -79,8 +79,9 @@ export const LOGIN_USER = gql`
 `;
 
 export const UPLOAD_IMAGE = gql`
-  mutation uploadImage($file: String) {
-    uploadImage(file: $file) {
+  mutation uploadImage($id: String!, $image: Upload!) {
+    uploadImage(id: $id, image: $image) {
+      id
       filename
     }
   }
