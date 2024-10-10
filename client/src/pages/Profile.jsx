@@ -53,6 +53,16 @@ const Profile = () => {
               <p><strong>Location:</strong> {entry.location}</p>
               <p><strong>Date:</strong> {entry.date}</p>
               <p><strong>Content:</strong> {entry.content}</p>
+              {entry.picture && (
+                <div>
+                  <p><strong>Picture:</strong></p>
+                  <img 
+                    src={entry.picture} 
+                    alt={entry.title} 
+                    style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'cover' }}
+                  />
+                </div>
+              )}
               {/* <button onClick={() => handleDeleteEntry(entry._id)}>Delete Entry</button> */}
             </li>
           ))}

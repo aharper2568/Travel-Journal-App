@@ -11,8 +11,7 @@ const typeDefs = `#graphql
 }
 
 type Image {
-  id: String!
-  filename: String!
+  secure_url: String!
 }
 
 type Entry {

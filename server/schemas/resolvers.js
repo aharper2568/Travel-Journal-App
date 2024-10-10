@@ -149,9 +149,7 @@ const resolvers = {
       console.log(`Uploading ${filename}...`);
       const stream = createReadStream();
       // Promisify the stream and store the file, then…
-      const newImage = { id, filename };
 
-      console.log('DIRNAME', __dirname);
 
       const dest = path.resolve(__dirname, '..', 'uploads', 'temp-image');
 
@@ -160,7 +158,7 @@ const resolvers = {
       stream.pipe(out);
       await finish(out);
 
-      const result = await cloudinary.uploader
+      const { secure_url } = await cloudinary.uploader
         .upload(dest, {
           folder: 'journal-images',
           unique_filename: true,
@@ -169,9 +167,8 @@ const resolvers = {
           console.log(error);
         });
 
-      console.log(result);
 
-      return newImage;
+      return { secure_url }
     },
     updateEntry: async (
       _,

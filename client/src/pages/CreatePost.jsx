@@ -6,13 +6,14 @@ import Auth from '../utils/auth';
 
 const CreateEntry = ({ profileId }) => {
   const imageInputRef = useRef();
-  const [title, setTitle] = useState('')
-  const [date, setDate] = useState('')
-  const [location, setLocation] = useState('')
-  const [content, setContent] = useState('')
-  const [picture, setPicture] = useState('')
-  const [addEntry, { error }] = useMutation(ADD_ENTRY)
-  const [uploadImage, { error: imageError }] = useMutation(UPLOAD_IMAGE)
+  const [imageUrl, setImageUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [location, setLocation] = useState('');
+  const [content, setContent] = useState('');
+  const [picture, setPicture] = useState('');
+  const [addEntry, { error }] = useMutation(ADD_ENTRY);
+  const [uploadImage, { error: imageError }] = useMutation(UPLOAD_IMAGE);
 
   if (imageError) console.log(imageError);
 
@@ -42,7 +43,7 @@ const CreateEntry = ({ profileId }) => {
         variables
       });
 
-      console.log(data);
+      setImageUrl(data.uploadImage.secure_url);
     }
   };
 
@@ -60,7 +61,7 @@ const CreateEntry = ({ profileId }) => {
           date,
           location,
           content,
-          picture
+          picture: imageUrl
         }
       });
 
@@ -69,6 +70,7 @@ const CreateEntry = ({ profileId }) => {
       setLocation('')
       setContent('')
       setPicture('')
+      setImageUrl('')
     } catch (err) {
       console.log(err)
     }
