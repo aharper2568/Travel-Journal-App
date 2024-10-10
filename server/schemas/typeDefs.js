@@ -8,6 +8,11 @@ const typeDefs = `#graphql
   isAdmin: Boolean
 }
 
+type Image {
+  _id: ID
+  filename: String
+}
+
 type Entry {
   _id: ID
   author: User        
@@ -38,6 +43,7 @@ type Mutation {
   addEntry(title: String!, location: String!, date: String!, picture: String, content: String): Entry
   removeEntry(entryId: ID!): Entry
   removeUser(_id: ID!): User
+  uploadImage: Image 
   updateEntry(entryId: ID! title: String!, location: String!, date: String!, picture: String, content: String): Entry
 }`
 module.exports = typeDefs;

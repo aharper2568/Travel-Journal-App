@@ -1,5 +1,6 @@
 const { User, Entry } = require('../models');
 const { signToken } = require('../utils/auth');
+const cloudinary = require('../config/cloudinary');
 
 const resolvers = {
   Query: {
@@ -120,6 +121,32 @@ const resolvers = {
       } catch (error) {
         throw new Error('Failed to remove user. Please try again.');
       }
+    },
+    uploadImage: async (_,{file}, context) => {
+      const { createReadStream, filename, mimetype, encoding } = await file;
+
+      // Invoking the `createReadStream` will return a Readable Stream.
+      // See https://nodejs.org/api/stream.html#stream_readable_streams
+      const stream = createReadStream();
+
+      // This is purely for demonstration purposes and will overwrite the
+      // local-file-output.txt in the current working directory on EACH upload.
+      const out = require('fs').createWriteStream('local-file-output');
+      stream.pipe(out);
+      await finished(out);
+
+      const uploadResult = await cloudinary.uploader
+       .upload(
+           filename, {
+               public_id: 'journal-images',
+           }
+       )
+       .catch((error) => {
+           console.log(error);
+       });
+    
+    console.log(uploadResult);
+    return null
     },
     updateEntry: async (_, { entryId, title, location, date, picture, content }, context) => {
       if (!context.user) {

@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { useState } from 'react';
-import { ADD_ENTRY } from '../utils/mutations';
+import { ADD_ENTRY, UPLOAD_IMAGE } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
@@ -11,6 +11,7 @@ const CreateEntry = ({ profileId }) => {
   const [content, setContent] = useState('')
   const [picture, setPicture] = useState('')
   const [addEntry, { error }] = useMutation(ADD_ENTRY)
+  const [uploadImage, { error: imageError }] = useMutation(UPLOAD_IMAGE)
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -20,11 +21,17 @@ const CreateEntry = ({ profileId }) => {
     }
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = async (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file) {
       setPicture(URL.createObjectURL(file));
+      const { data } = await uploadImage({
+        variables: {
+          file: file,
+        }
+      });
+      console.log(data)
       console.log(file, picture)
     }
   };
@@ -115,6 +122,8 @@ const CreateEntry = ({ profileId }) => {
                 )}
                 <input
                   type='file'
+                  name='image'
+                  id='image'
                   accept="image/*"
                   onChange={handleFileChange}
                   className="hidden"
