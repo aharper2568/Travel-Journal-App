@@ -1,8 +1,10 @@
+import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { useState, useRef } from 'react';
 import { ADD_ENTRY, UPLOAD_IMAGE } from '../utils/mutations';
 
 import Auth from '../utils/auth';
+import { QUERY_ME, QUERY_SINGLE_USER } from '../utils/queries';
 
 const CreateEntry = ({ profileId }) => {
   const imageInputRef = useRef();
@@ -12,7 +14,14 @@ const CreateEntry = ({ profileId }) => {
   const [location, setLocation] = useState('');
   const [content, setContent] = useState('');
   const [picture, setPicture] = useState('');
-  const [addEntry, { error }] = useMutation(ADD_ENTRY);
+  const { id } = useParams();
+  const [addEntry, { error }] = useMutation(ADD_ENTRY, {
+    refetchQueries:[
+      {
+        query: id ? QUERY_SINGLE_USER : QUERY_ME,
+      }
+    ]
+  });
   const [uploadImage, { error: imageError }] = useMutation(UPLOAD_IMAGE);
 
   if (imageError) console.log(imageError);
