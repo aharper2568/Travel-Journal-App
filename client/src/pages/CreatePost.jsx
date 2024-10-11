@@ -7,13 +7,13 @@ import Auth from '../utils/auth';
 import { QUERY_ME, QUERY_SINGLE_USER } from '../utils/queries';
 
 const CreateEntry = ({ profileId }) => {
-  const imageInputRef = useRef();
-  const [imageUrl, setImageUrl] = useState('');
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [location, setLocation] = useState('');
   const [content, setContent] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [picture, setPicture] = useState('');
+  const imageInputRef = useRef();
   const { id } = useParams();
   const [addEntry, { error }] = useMutation(ADD_ENTRY, {
     refetchQueries:[
@@ -102,6 +102,28 @@ const CreateEntry = ({ profileId }) => {
                 style={{ background: '#FCFAEE' }}
               />
 
+              <div
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                className="w-full p-4 mb-4 border-2 border-dashed border-gray-300 rounded-lg text-center"
+                style={{ background: '#FCFAEE' }}
+              >
+                {picture ? (
+                  <img src={picture} alt="Preview" className="mb-2 rounded-md" style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'cover' }} />
+                ) : (
+                  <p className="text-gray-500">Drag & drop a picture here.</p>
+                )}
+                <input
+                  ref={imageInputRef}
+                  type='file'
+                  name='image'
+                  id='image'
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </div>
+
               <input
                 type='date'
                 value={date}
@@ -129,29 +151,7 @@ const CreateEntry = ({ profileId }) => {
                 className="w-full p-3 mb-4 border border-gray-300"
                 style={{ background: '#FCFAEE' }}
               />
-
-              <div
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                className="w-full p-4 mb-4 border-2 border-dashed border-gray-300 rounded-lg text-center"
-                style={{ background: '#FCFAEE' }}
-              >
-                {picture ? (
-                  <img src={picture} alt="Preview" className="mb-2 rounded-md" style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'cover' }} />
-                ) : (
-                  <p className="text-gray-500">Drag & drop a picture here.</p>
-                )}
-                <input
-                  ref={imageInputRef}
-                  type='file'
-                  name='image'
-                  id='image'
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-              </div>
-
+              
               <button
                 type='submit'
                 className="w-full p-3 text-white rounded-lg transition duration-300 hover:scale-105"

@@ -29,6 +29,7 @@ export const QUERY_SINGLE_USER = gql`
         title
         location
         date
+        content
         picture
       }
     }
@@ -60,6 +61,7 @@ export const QUERY_ME = gql`
         title
         location
         date
+        content
         picture
       }
     }
