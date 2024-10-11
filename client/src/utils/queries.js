@@ -12,6 +12,8 @@ export const QUERY_USERS = gql`
         title
         location
         date
+        content
+        picture
       }
     }
   }
