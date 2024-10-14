@@ -13,6 +13,7 @@ const CreateEntry = ({ profileId }) => {
   const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [picture, setPicture] = useState('');
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
   const imageInputRef = useRef();
   const { id } = useParams();
   const [addEntry, { error }] = useMutation(ADD_ENTRY, {
@@ -53,6 +54,7 @@ const CreateEntry = ({ profileId }) => {
       });
 
       setImageUrl(data.uploadImage.secure_url);
+      setIsImageUploaded(true);
     }
   };
 
@@ -80,6 +82,7 @@ const CreateEntry = ({ profileId }) => {
       setContent('')
       setPicture('')
       setImageUrl('')
+      isImageUploaded(false)
     } catch (err) {
       console.log(err)
     }
@@ -154,8 +157,8 @@ const CreateEntry = ({ profileId }) => {
               
               <button
                 type='submit'
-                className="w-full p-3 text-white rounded-lg transition duration-300 hover:scale-105"
-                style={{ background: '#DA8359' }}
+                className={`w-full p-3 text-white rounded-lg transition duration-300 hover:scale-105 ${!isImageUploaded ? 'transition duration-300 hover:scale-95 bg-gray-400 cursor-not-allowed' : 'bg-[#DA8359]'}`}
+                disabled={!isImageUploaded}
               >
                 Submit
               </button>
@@ -164,8 +167,13 @@ const CreateEntry = ({ profileId }) => {
             </form>
           </div>
         </main>
-      ) : (<p>You must be logged in to make a new post.</p>)}
-
+      ) : (
+        <div className="flex justify-center items-center min-h-screen bg-gray-100">
+          <h4 className="text-lg">
+            You need to be logged in to create a post. Use the navigation links above to sign up or log in!
+          </h4>
+        </div>
+      )}
     </>
   )
 }
