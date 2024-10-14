@@ -23,41 +23,45 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
 
-  if (!Auth.loggedIn) {
+  if (!Auth.loggedIn()) {
     return (
-      <h4>
-        You need to be logged in to see your profile page. Use the navigation
-        links above to sign up or log in!
-      </h4>
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <h4 className="text-lg">
+          You need to be logged in to see the profile page. Use the navigation links above to sign up or log in!
+        </h4>
+      </div>
     );
   }
 
   return (
-    <div>
-      <h2>{id ? `${user.username}'s` : 'Your'} profile</h2>
-      {user.entries ? (
-        <ul className="border">
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <h2 style={{ color: '#DA8359' }} className="text-3xl font-bold mb-4 text-center">
+        {id ? `${user.username}'s` : 'Your'} Profile
+      </h2>
+      {user.entries && user.entries.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {user.entries.map((entry) => (
-            <li key={entry._id} className="border my-2 p-2">
-              <h3>{entry.title}</h3>
-              <p><strong>Location:</strong> {entry.location}</p>
-              <p><strong>Date:</strong> {entry.date}</p>
-              <p><strong>Content:</strong> {entry.content}</p>
+            <div key={entry._id} style={{ background: '#FCFAEE' }} className="border border-gray-300 rounded-lg p-4 bg-gray-50 shadow-md flex flex-col">
+              <h3 className="text-xl font-semibold mb-2">{entry.title}</h3>
+              <p className="text-sm mb-1"><strong>Location:</strong> {entry.location}</p>
+              <p className="text-sm mb-1"><strong>Date:</strong> {entry.date}</p>
+              <p className="text-sm mb-3"><strong>About the memory:</strong> {entry.content}</p>
               {entry.picture && (
-                <div>
-                  <p><strong>Picture:</strong></p>
-                  <img 
-                    src={entry.picture} 
-                    alt={entry.title} 
-                    style={{ maxWidth: '100%', maxHeight: '300px', objectFit: 'cover' }}
+                  <img
+                    src={entry.picture}
+                    alt={entry.title}
+                    className="rounded-md border border-gray-200 shadow-sm"
                   />
-                </div>
               )}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
-        <p>No entries found.</p>
+        <div className="flex justify-center items-center min-h-screen">
+        <h4 className="text-lg">
+          No memories yet.
+        </h4>
+      </div>
       )}
     </div>
   );

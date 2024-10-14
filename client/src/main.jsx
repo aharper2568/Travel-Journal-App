@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Error from './pages/Error';
 import CreatePost from './pages/CreatePost'
 import TestComponent from './pages/Debug.jsx';
+import SearchResults from './pages/SearchResults.jsx';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,9 @@ const router = createBrowserRouter([
       }, {
         path: '/debug',
         element: <TestComponent/>
+      }, {
+        path: '/search/:location',
+        element: <SearchResults/>
       }
     ]
   }
