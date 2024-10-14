@@ -1,8 +1,8 @@
-# Memories & Miles (A Travel Journal Application) 
+# Miles & Memories (A Travel Journal Application) 
 
 ## Intro
 
-Memories and Miles is an online travel journal that users can sign up for and record places they explore. It is meant as a record of timestamps that can be shared with others, or to be reviewed by the user themselves. In spirit of that, interaction between users was kept to a minimum. 
+Miles & Memories is an online travel journal that users can sign up for and record places they explore. It is meant as a record of timestamps that can be shared with others, or to be reviewed by the user themselves. In spirit of that, interaction between users was kept to a minimum. 
 
 ## Tech Used
 - Vite
