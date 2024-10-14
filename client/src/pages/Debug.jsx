@@ -9,6 +9,7 @@ const TestComponent = () => {
     username: '',
     email: '',
     password: '',
+    isAdmin: '',
     title: '',
     content: '',
     location: '',
@@ -18,7 +19,7 @@ const TestComponent = () => {
   const { loading: usersLoading, error: usersError, data: usersData, refetch: refetchUsers } = useQuery(QUERY_USERS);
   const { loading: meLoading, error: meError, data: meData } = useQuery(QUERY_ME);
   const { loading: entriesLoading, error: entriesError, data: entriesData, refetch: refetchEntries } = useQuery(QUERY_ENTRIES);
-  
+
   const [addUser] = useMutation(ADD_PROFILE);
   const [loginUser] = useMutation(LOGIN_USER);
   const [addEntry] = useMutation(ADD_ENTRY);
@@ -27,11 +28,11 @@ const TestComponent = () => {
 
   const navigate = useNavigate();
 
- 
+
   useEffect(() => {
     if (!meLoading && meData && !meData.me.isAdmin) {
-      
-      navigate('/'); 
+
+      navigate('/');
     }
   }, [meLoading, meData, navigate]);
 
@@ -47,7 +48,7 @@ const TestComponent = () => {
     event.preventDefault();
     try {
       const { data } = await addUser({
-        variables: { username: formState.username, email: formState.email, password: formState.password },
+        variables: { username: formState.username, email: formState.email, password: formState.password, isAdmin: formState.isAdmin },
       });
       console.log(data);
       refetchUsers();
@@ -88,7 +89,7 @@ const TestComponent = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await deleteUser({ variables: {_id:  userId } });
+      await deleteUser({ variables: { _id: userId } });
       refetchUsers();
     } catch (error) {
       console.error(error);
@@ -108,40 +109,51 @@ const TestComponent = () => {
   if (!meData?.me?.isAdmin) return <p>Access Denied</p>;
 
   return (
-    <div>
-      <h1>Admin Only Component</h1>
+    <div className="p-6 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center">Admin Only Component</h1>
 
-      <h2>Users:</h2>
-      {usersLoading ? <p>Loading users...</p> : (
-        <ul className='border sm:container'>
-          {usersData?.users?.map((user) => (
-            <li className='border ' key={user._id}>
-              {user.username} ({user.email}) - Admin: {user.isAdmin ? 'Yes' : 'No'}
-              <button onClick={() => handleDeleteUser(user._id)}>Delete User</button>
-            </li>
-          ))}
-        </ul>
-      )}
-      {usersError && <p>Error loading users: {usersError.message}</p>}
+      <div className="mb-8">
+        <h2 className="text-2xl mb-4">Users:</h2>
+        {usersLoading ? (
+          <p>Loading users...</p>
+        ) : (
+          <ul className="space-y-4">
+            {usersData?.users?.map((user) => (
+              <li key={user._id} className="p-4 border border-gray-300 rounded flex justify-between">
+                <span>
+                  <span>{user.username}</span> ({user.email}) - Admin: {user.isAdmin ? 'Yes' : 'No'}
+                </span>
+                <button
+                  onClick={() => handleDeleteUser(user._id)}
+                  className="bg-red-500 text-white py-1 px-3 rounded"
+                >
+                  Delete User
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {usersError && <p className="text-red-500">Error loading users: {usersError.message}</p>}
+      </div>
 
-      <h2>My Info:</h2>
-      {meLoading ? <p>Loading user info...</p> : (
-        <div>
-          <p>Username: {meData?.me?.username}</p>
-          <p>Email: {meData?.me?.email}</p>
+      <div className="mb-8">
+        <h2 className="text-2xl mb-4">My Info:</h2>
+        <div className="p-4 border border-gray-300 rounded">
+          <p className="mb-2"><strong>Username:</strong> {meData?.me?.username}</p>
+          <p><strong>Email:</strong> {meData?.me?.email}</p>
         </div>
-      )}
-      {meError && <p>Error loading user info: {meError.message}</p>}
-      
-      <div className='border'>
-        <h2>Add User</h2>
-        <form onSubmit={handleAddUser}>
+      </div>
+
+      <div className="mb-8">
+        <h2 className="text-2xl mb-4">Add User</h2>
+        <form onSubmit={handleAddUser} className="space-y-4">
           <input
             type="text"
             name="username"
             value={formState.username}
             onChange={handleChange}
             placeholder="Username"
+            className="w-full p-2 border border-gray-300 rounded"
           />
           <input
             type="email"
@@ -149,6 +161,7 @@ const TestComponent = () => {
             value={formState.email}
             onChange={handleChange}
             placeholder="Email"
+            className="w-full p-2 border border-gray-300 rounded"
           />
           <input
             type="password"
@@ -156,20 +169,35 @@ const TestComponent = () => {
             value={formState.password}
             onChange={handleChange}
             placeholder="Password"
+            className="w-full p-2 border border-gray-300 rounded"
           />
-          <button type="submit">Add User</button>
+          <h3 className="ml-2">Is the user an Admin?</h3>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              name="isAdmin"
+              checked={formState.isAdmin === true}
+              onChange={(e) => handleChange({ target: { name: e.target.name, value: e.target.checked } })}
+              className="w-4 h-4 border border-gray-300 rounded"
+            />
+            <label htmlFor="isAdmin" className="ml-2 text-gray-700">True or False</label>
+          </div>
+          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+            Add User
+          </button>
         </form>
       </div>
-      
-      <div className='border my-2'>
-        <h2>Login</h2>
-        <form onSubmit={handleLoginUser}>
+
+      <div className="mb-8">
+        <h2 className="text-2xl mb-4">Login</h2>
+        <form onSubmit={handleLoginUser} className="space-y-4">
           <input
             type="email"
             name="email"
             value={formState.email}
             onChange={handleChange}
             placeholder="Email"
+            className="w-full p-2 border border-gray-300 rounded"
           />
           <input
             type="password"
@@ -177,20 +205,24 @@ const TestComponent = () => {
             value={formState.password}
             onChange={handleChange}
             placeholder="Password"
+            className="w-full p-2 border border-gray-300 rounded"
           />
-          <button type="submit">Login</button>
+          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+            Login
+          </button>
         </form>
       </div>
-      
-      <div className='border my-2'>
-        <h2>Add Entry</h2>
-        <form onSubmit={handleAddEntry}>
+
+      <div className="mb-8">
+        <h2 className="text-2xl mb-4">Add Entry</h2>
+        <form onSubmit={handleAddEntry} className="space-y-4">
           <input
             type="text"
             name="title"
             value={formState.title}
             onChange={handleChange}
             placeholder="Title"
+            className="w-full p-2 border border-gray-300 rounded"
           />
           <input
             type="text"
@@ -198,34 +230,45 @@ const TestComponent = () => {
             value={formState.location}
             onChange={handleChange}
             placeholder="Location"
+            className="w-full p-2 border border-gray-300 rounded"
           />
           <input
             type="date"
             name="date"
             value={formState.date}
             onChange={handleChange}
-            placeholder="Date"
+            className="w-full p-2 border border-gray-300 rounded"
           />
           <textarea
             name="content"
             value={formState.content}
             onChange={handleChange}
             placeholder="Content"
+            className="w-full p-2 border border-gray-300 rounded"
           />
-          <button type="submit">Add Entry</button>
+          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">
+            Add Entry
+          </button>
         </form>
       </div>
 
-      <h2>Entries:</h2>
-      {entriesLoading ? <p>Loading entries...</p> : (
-        <ul className="border">
+      <h2 className="text-2xl mb-4">Entries:</h2>
+      {entriesLoading ? (
+        <p>Loading entries...</p>
+      ) : (
+        <ul className="space-y-4">
           {entriesData?.entries?.map((entry) => (
-            <li key={entry._id} className="border my-2 p-2">
+            <li key={entry._id} className="p-4 border border-gray-300 rounded shadow-sm">
               <h3>{entry.title}</h3>
               <p><strong>Location:</strong> {entry.location}</p>
               <p><strong>Date:</strong> {entry.date}</p>
               <p><strong>Content:</strong> {entry.content}</p>
-              <button onClick={() => handleDeleteEntry(entry._id)}>Delete Entry</button>
+              <button
+                onClick={() => handleDeleteEntry(entry._id)}
+                className="mt-2 bg-red-500 text-white py-1 px-3 rounded"
+              >
+                Delete Entry
+              </button>
             </li>
           ))}
         </ul>
