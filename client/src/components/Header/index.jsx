@@ -37,7 +37,7 @@ const Header = () => {
 
       {/* Auth Links */}
       <div className='hidden md:flex space-x-6'>
-        <AuthLinks />
+        <AuthLinks style={{ color: '#F8EDED' }} className='hidden md:flex space-x-6'/>
       </div>
     </nav>
 

@@ -5,7 +5,7 @@ import { QUERY_USERS } from '../utils/queries';
 
 const UserLinks = ({ users }) => {
   return (
-    <div className="grid grid-cols-12 sm:grid-cols-6 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {users?.map(user => (
         <div
           style={{ background: '#FCFAEE' }}
@@ -66,18 +66,18 @@ const Home = () => {
         Memories
       </h1>
       
-      <form onSubmit={handleSearch} className="mb-12 flex justify-center w-full max-w-md">
+      <form onSubmit={handleSearch} className="mb-12 flex flex-col sm:flex-row justify-center w-full max-w-md">
         <input
           type="text"
           placeholder="Search by Location"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full p-3 border border-gray-300 rounded-l-lg"
+          className="w-full p-3 border border-gray-300 rounded-lg mb-2 sm:mb-0 sm:rounded-l-lg"
           style={{ background: '#FCFAEE' }}
         />
         <button
           type="submit"
-          className="p-3 text-white rounded-r-lg"
+          className="p-3 text-white rounded-lg"
           style={{ background: '#DA8359' }}
         >
           Search

@@ -9,17 +9,17 @@ const AuthLinks = () => {
 
   if (Auth.loggedIn()) {
     return (
-      <button onClick={logout}>
+      <button style={{ color: '#F8EDED' }} className='text-lg' onClick={logout}>
         Logout
       </button>
     )
   }
   return (
     <>
-      <Link to="/login" style={{ color: '#F8EDED' }} className='hidden md:flex space-x-6 transition duration-300 hover:scale-110'>
+      <Link to="/login" style={{ color: '#F8EDED' }} className='text-lg transition duration-300 hover:scale-110'>
         Login
       </Link>
-      <Link to="/signup" style={{ color: '#F8EDED' }} className='hidden md:flex space-x-6 transition duration-300 hover:scale-110'>
+      <Link to="/signup" style={{ color: '#F8EDED' }} className='text-lg transition duration-300 hover:scale-110'>
         Signup
       </Link>
     </>
